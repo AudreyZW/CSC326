@@ -1,4 +1,4 @@
-#Copyright (C) 2011 by Peter Goodman
+# Copyright (C) 2011 by Peter Goodman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -53,6 +53,7 @@ class crawler(object):
         self.word_list = []
         self.url_list = []
         self.dictt = {}
+        self.word_id_url_id = {}
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -244,7 +245,8 @@ class crawler(object):
             self.word_list.append(word)
 
             if word in self._curr_url:
-                self.dictt[word].add(self.document_id(self._curr_url))
+                self.dictt[word].add(self._curr_url)
+                self.word_id_url_id[self.word_id(word)].add(self.document_id(self._curr_url))
 
             self._curr_words.append((self.word_id(word), self._font_size))
 
@@ -360,14 +362,13 @@ class crawler(object):
                     my_set.add(element)
 
             res[self.word_id] = my_set'''
-        res  = self.dictt
-
+        res  = self.word_id_url_id
 
         return res
 
     def get_resolved_inverted_index(self):
 
-        res = dict()
+        '''res = dict()
 
         for word in self._word_id_cache:
             my_set = set()
@@ -375,7 +376,10 @@ class crawler(object):
                 if word in url:
                     my_set.add(url)
 
-            res[word] = my_set
+            res[word] = my_set'''
+        res = self.dictt
+
+        return res
 
 
 if __name__ == "__main__":
@@ -384,6 +388,11 @@ if __name__ == "__main__":
 
     inverted_index = bot.get_inverted_index()
     print(inverted_index)
+
+    print ("------------------------------------------------")
+
+    resolved_inverted_index = bot.get_resolved_inverted_index()
+    print(resolved_inverted_index)
 
 
 
