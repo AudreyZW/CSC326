@@ -1,9 +1,8 @@
-from bottle import route, run
+from bottle import route, run,redirect
 
 @route('/')
 
 def home():
-    return '<html><body>This is a very simple test case for CSC326.<a href = "http://192.168.1.10:8090/" My link </a> </body></html>'
-
-run(host='0.0.0.0', port=8080, debug=True)
+    redirect("http://localhost:8080/linker")
+run(host='localhost', port=8080, debug=True)
 

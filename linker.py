@@ -1,9 +1,9 @@
 from bottle import route, run
 
-@route('/')
+@route('/linker')
 
-def home():
+def linker():
     return '<html><body>This is what links to the first page.</body></html>'
 
-run(host='0.0.0.0', port=8090, debug=True)
+run(host='localhost', port=8080, debug=True)
 
