@@ -1,4 +1,4 @@
-#Copyright (C) 2011 by Peter Goodman
+# Copyright (C) 2011 by Peter Goodman
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -17,6 +17,20 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
+
+'''Instructions on running the modified crawler: Make sure the 'urls.txt' file is included in the project.
+Compile and run the modified_crawler.py file. The inverted_index function and resolved_inverted_index funtion
+ results should print in the terminal in the form of dictionaries.
+
+ Deliverables:
+ 1. the document index is the variable _url_list which stores the document indices and the urls in a dictionary
+    this can be called from the main as 'bot._url_list'
+ 2. the lexicon is the variable lexicon which stores all the words
+    this can be called from the main as 'bot._lexicon'
+ 3. the inverted index is the variable '_inverted_index' which returns a list of document ids given a word'
+    this can be called from the main as 'bot._inverted_index'
+
+ To run the test case, please include the test case url provided.'''
 
 import urllib2
 import urlparse
@@ -40,7 +54,6 @@ WORD_SEPARATORS = re.compile(r'\s|\n|\r|\t|[^a-zA-Z0-9\-_]')
 class crawler(object):
     """Represents 'Googlebot'. Populates a database by crawling and indexing
     a subset of the Internet.
-
     This crawler keeps track of font sizes and makes it simpler to manage word
     ids and document ids."""
 
@@ -50,9 +63,15 @@ class crawler(object):
         self._url_queue = []
         self._doc_id_cache = {}
         self._word_id_cache = {}
-        self.word_list = []
-        self.url_list = []
-        self.dictt = {}
+
+        ## Lab 1 variables
+        self._url_list = {}  # key=url_id, value=url
+        self._word_list = {}  # key=word_id, value=word
+        self._inverted_index = {}  # return value for function get_inverted_index()
+        self._resolved_inverted_index = {}  # return value for function get_resolved_inverted_index()
+        self._docid_url = {}  # key=doc_id, value=url
+        self._docid_word = {}  # key=doc_id, value=word
+        self._lexicon = [] #list to store all the words
 
         # functions to call when entering and exiting specific tags
         self._enter = defaultdict(lambda *a, **ka: self._visit_ignore)
@@ -131,6 +150,8 @@ class crawler(object):
         and then returns that newly inserted document's id."""
         ret_id = self._mock_next_doc_id
         self._mock_next_doc_id += 1
+        # link docid to url
+        self._docid_url[ret_id] = url
         return ret_id
 
     # TODO remove me in real version
@@ -139,6 +160,8 @@ class crawler(object):
         and then returns that newly inserted word's id."""
         ret_id = self._mock_next_word_id
         self._mock_next_word_id += 1
+        # link docid to word
+        self._docid_word[ret_id] = word
         return ret_id
 
     def word_id(self, word):
@@ -216,6 +239,18 @@ class crawler(object):
         # TODO: knowing self._curr_doc_id and the list of all words and their
         #       font sizes (in self._curr_words), add all the words into the
         #       database for this document
+
+        ## Lab 1 code add word id and doc it to inverted index dict
+        for word in self._curr_words:
+            word_id = word[0]  # word[0] is word_id and word[1] is font size
+
+            if word_id in self._inverted_index:
+                self._inverted_index[word_id].add(
+                    self._curr_doc_id)  # if word_id exists as the key, add more doc id to the value set()
+            else:
+                self._inverted_index[word_id] = set()  # if word_id does not exist, initiate the set first and then add
+                self._inverted_index[word_id].add(self._curr_doc_id)
+
         print "    num words=" + str(len(self._curr_words))
 
     def _increase_font_factor(self, factor):
@@ -234,19 +269,14 @@ class crawler(object):
         """Add some text to the document. This records word ids and word font sizes
         into the self._curr_words list for later processing."""
         words = WORD_SEPARATORS.split(elem.string.lower())
-
         for word in words:
-            self.dictt[word] = set()
-
             word = word.strip()
             if word in self._ignored_words:
                 continue
-            self.word_list.append(word)
-
-            if word in self._curr_url:
-                self.dictt[word].add(self.document_id(self._curr_url))
-
             self._curr_words.append((self.word_id(word), self._font_size))
+            # link word id and word
+            self._word_list[self.word_id(word)] = word
+            self._lexicon.append(word)
 
     def _text_of(self, elem):
         """Get the text inside some element without any tags."""
@@ -336,9 +366,12 @@ class crawler(object):
                 self._curr_doc_id = doc_id
                 self._font_size = 0
                 self._curr_words = []
+
+                # link doc id and url
+                self._url_list[self.document_id(url)] = url
+
                 self._index_document(soup)
                 self._add_words_to_document()
-                self.url_list.append(self._curr_url)
                 print "    url=" + repr(self._curr_url)
 
             except Exception as e:
@@ -349,33 +382,27 @@ class crawler(object):
                     socket.close()
 
     def get_inverted_index(self):
-
-        '''res = dict()
-
-        for word in self.word_list:
-            my_set = set()
-            for url in self.url_list:
-                if word in url:
-                    element = self.document_id(url)
-                    my_set.add(element)
-
-            res[self.word_id] = my_set'''
-        res  = self.dictt
-
-
-        return res
+        return self._inverted_index
 
     def get_resolved_inverted_index(self):
 
-        res = dict()
+        # iterate inverted index to match word_id and doc_id to word and url accordingly
+        for item in self._inverted_index:
+            word_id = item
+            # print self._word_list[word_id]
+            word = self._word_list[word_id]
+            # print item
 
-        for word in self._word_id_cache:
-            my_set = set()
-            for url in self._curr_url:
-                if word in url:
-                    my_set.add(url)
+            # for every word, add its url to the resolved_list
+            for doc_id in self._inverted_index[item]:
+                url = self._url_list[doc_id]
+                if word in self._resolved_inverted_index:
+                    self._resolved_inverted_index[word].add(url)
+                else:
+                    self._resolved_inverted_index[word] = set()
+                    self._resolved_inverted_index[word].add(url)
 
-            res[word] = my_set
+        return self._resolved_inverted_index
 
 
 if __name__ == "__main__":
@@ -383,7 +410,9 @@ if __name__ == "__main__":
     bot.crawl(depth=1)
 
     inverted_index = bot.get_inverted_index()
-    print(inverted_index)
+    resolved_inverted_index = bot.get_resolved_inverted_index()
+    document_index = bot._url_list
 
-
+    print bot.get_inverted_index()
+    print bot.get_resolved_inverted_index()
 
