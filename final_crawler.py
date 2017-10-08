@@ -31,9 +31,8 @@ Compile and run the modified_crawler.py file. The inverted_index function and re
  3. the inverted index is the variable '_inverted_index' which returns a list of document ids given a word'
     this can be called from the main
 
- To run the test cases, please uncomment the test cases one by one, specified in the main, which will take in the
- urls provided and test them. The html files are also included in this project for reference and include comments about
- the test cases.'''
+ To run the test cases, please run the html files and add their urls one by one to the 'urls.txt file' to test each one individually.
+ The html files are included in this project for reference and include comments about the test cases.'''
 
 import urllib2
 import urlparse
@@ -412,13 +411,8 @@ class crawler(object):
 
 if __name__ == "__main__":
 
-    #please test this with a urls.txt file
+    #please add the appropriate test cases one by one to the 'urls.txt' file
     bot = crawler(None, "urls.txt")
-
-    #to run the test, please uncomment the following, one by one
-    #bot = crawler(None, "urls_test1.txt")
-    #bot = crawler(None, "urls_test2.txt")
-
     bot.crawl(depth=1)
 
     inverted_index = bot.get_inverted_index()
