@@ -1,0 +1,11 @@
+
+Inverted_index: {1: set([1, 2]), 2: set([1]), 3: set([1]), 4: set([1]), 5: set([1]), 6: set([1, 2]), 7: set([2]), 8: set([2]), 9: set([2]), 10: set([2])}
+
+
+Resolved_index: {u'what': set([u'http://localhost:8080/link']), u'links': set([u'http://localhost:8080/link']), u'to': set([u'http://localhost:8080/link']), u'this': set(['http://localhost:8080/', u'http://localhost:8080/link']), u'linker': set(['http://localhost:8080/']), u'very': set(['http://localhost:8080/']), u'test': set(['http://localhost:8080/']), u'page': set(['http://localhost:8080/', u'http://localhost:8080/link']), u'simple': set(['http://localhost:8080/']), u'first': set([u'http://localhost:8080/link'])}
+
+
+Url dictionary: {1: 'http://localhost:8080/', 2: u'http://localhost:8080/link'}
+
+
+Word dictionary: {1: u'this', 2: u'very', 3: u'simple', 4: u'test', 5: u'linker', 6: u'page', 7: u'what', 8: u'links', 9: u'to', 10: u'first'}
