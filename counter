@@ -1,9 +1,0 @@
-from collections import Counter
-def word_count (list1):
-    counter = dict()
-    for i in list1:
-        counter[i] = counter.get(i,0) +1 
-        
-    for i,j in counter.items():
-        print (i,j)
-    
