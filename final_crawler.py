@@ -18,9 +18,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-'''Instructions on running the modified crawler: Make sure a 'urls.txt' file is included in the project.Currently
-it is empty, but urls can be added to it.
-Compile and run the modified_crawler.py file. The inverted_index function and resolved_inverted_index funtion
+'''Instructions on running the modified crawler: Make sure the 'urls.txt' file is included in the project.
+Compile and run the crawler file. The inverted_index function and resolved_inverted_index funtion
  results should print in the terminal in the form of dictionaries.
 
  Deliverables:
@@ -31,8 +30,9 @@ Compile and run the modified_crawler.py file. The inverted_index function and re
  3. the inverted index is the variable '_inverted_index' which returns a list of document ids given a word'
     this can be called from the main
 
- To run the test cases, please run the html files and add their urls one by one to the 'urls.txt file' to test each one individually.
- The html files are included in this project for reference and include comments about the test cases.'''
+ To run the test case, please run the test1.py file which should listen on port 8090. After this please run 
+ the crawler and make sure that 'http://localhost:8090' is included in urls.txt. The results should print out 
+ in the terminal. Please refer to the README(test_case) file for more details.'''
 
 import urllib2
 import urlparse
