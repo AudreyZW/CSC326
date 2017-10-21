@@ -1,4 +1,4 @@
-Benchmarking 127.0.0.1 (be patient)
+Benchmarking ec2-54-84-67-205.compute-1.amazonaws.com (be patient)
 Completed 100 requests
 Completed 200 requests
 Completed 300 requests
@@ -13,30 +13,30 @@ Finished 1000 requests
 
 
 Server Software:        
-Server Hostname:        127.0.0.1
-Server Port:            8090
+Server Hostname:        ec2-54-84-67-205.compute-1.amazonaws.com
+Server Port:            8080
 
-Document Path:          /?keywords=helloworld+foo+bar
+Document Path:          /
 Document Length:        0 bytes
 
 Concurrency Level:      50
-Time taken for tests:   0.011 seconds
+Time taken for tests:   0.010 seconds
 Complete requests:      1000
 Failed requests:        1500
    (Connect: 0, Receive: 1000, Length: 0, Exceptions: 500)
 Total transferred:      0 bytes
 HTML transferred:       0 bytes
-Requests per second:    95174.65 [#/sec] (mean)
-Time per request:       0.525 [ms] (mean)
-Time per request:       0.011 [ms] (mean, across all concurrent requests)
+Requests per second:    104405.93 [#/sec] (mean)
+Time per request:       0.479 [ms] (mean)
+Time per request:       0.010 [ms] (mean, across all concurrent requests)
 Transfer rate:          0.00 [Kbytes/sec] received
 
 Connection Times (ms)
               min  mean[+/-sd] median   max
 Connect:        0    0   0.0      0       0
-Processing:     0    0   0.5      1       1
+Processing:     0    0   0.4      1       1
 Waiting:        0    0   0.0      0       0
-Total:          0    0   0.5      1       1
+Total:          0    0   0.4      1       1
 ERROR: The median and mean for the processing time are more than twice the standard
        deviation apart. These results are NOT reliable.
 ERROR: The median and mean for the total time are more than twice the standard
