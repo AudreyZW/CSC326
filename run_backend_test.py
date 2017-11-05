@@ -1,33 +1,26 @@
 import pprint
 import crawler
 import operator
+import string
 from collections import OrderedDict
 
+'''In order to run this code, simply run the file pagerank.py'''
+
+'''This file imports the crawler to crawl through the document and stores the scores of the pages into a list. We then 
+sort that list in descending order and then print out the document ids and their scores.'''
+
 if __name__ == "__main__":
+
+    #creating an instance of the crawler
     bot = crawler.crawler(None, "urls.txt")
     bot.crawl(depth=1)
 
-    inverted_index = bot.get_inverted_index()
-    resolved_inverted_index = bot.get_resolved_inverted_index()
-    document_index = bot._url_list
-
-    #print bot.get_inverted_index()
-    #print bot.get_resolved_inverted_index()
-    #stuff = ['Doc ID', 'PageRank Scores']
-    #stuff.insert(0, stuff[:])
-    #pp =pprint.PrettyPrinter(indent=2)
-
-
-    #score_list is dictionary
+    #score_list is dictionary which maps the score of the document to its docid
     score_list = bot.get_docid_score()
 
-    #score_list_descending is the sorted dictionary
-    #score_list_descending = OrderedDict(sorted(score_list.items(), reverse = True))
-
-
+    #sort the scores in descending order
     sorted_score = sorted(score_list.items(), key=operator.itemgetter(1), reverse = True)
 
-    pprint.pprint(sorted_score, width=1)
-
-    bot.initialize_tables()
-    bot.store_to_database()
+    #pretty print the sorted scores and the document ids
+    for i in sorted_score:
+        pprint.pprint(list(i))
